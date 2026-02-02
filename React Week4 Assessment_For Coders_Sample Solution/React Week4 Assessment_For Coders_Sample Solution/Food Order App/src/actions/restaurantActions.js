@@ -1,19 +1,19 @@
 import axios from "axios";
-import { BACKEND_URL_ENDPOINT, GET_ALL_CATEGORIES_API } from "../constants/backend";
+import { BACKEND_URL_ENDPOINT, GET_ALL_RESTAURANTS_API } from "../constants/backend";
 
 import {
-  CATEGORY_LIST_REQUEST,
-  CATEGORY_LIST_SUCCESS,
-  CATEGORY_LIST_FAILURE,
-  CATEGORY_DETAILS_REQUEST,
-  CATEGORY_DETAILS_SUCCESS,
-  CATEGORY_DETAILS_FAILURE,
-} from "../constants/categoryActionConstants";
+  RESTAURANT_LIST_REQUEST,
+  RESTAURANT_LIST_SUCCESS,
+  RESTAURANT_LIST_FAILURE,
+  RESTAURANT_DETAILS_REQUEST,
+  RESTAURANT_DETAILS_SUCCESS,
+  RESTAURANT_DETAILS_FAILURE,
+} from "../constants/restaurantActionConstants";
 
-export const listCategories = () => async (dispatch) => {
+export const listRestaurants = () => async (dispatch) => {
   try {
     dispatch({
-      type: CATEGORY_LIST_REQUEST,
+      type: RESTAURANT_LIST_REQUEST,
     });
 
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -27,33 +27,33 @@ export const listCategories = () => async (dispatch) => {
     };
 
     await axios
-      .get(GET_ALL_CATEGORIES_API, config)
+      .get(GET_ALL_RESTAURANTS_API, config)
       .then((res) => {
         if (res.status === 200) {
           console.log(res.data.data)
           dispatch({
-            type: CATEGORY_LIST_SUCCESS,
+            type: RESTAURANT_LIST_SUCCESS,
             payload: res.data.data,
           });
         } else {
           dispatch({
-            type: CATEGORY_LIST_FAILURE,
-            payload: 'Not able to fetch the categories',
+            type: RESTAURANT_LIST_FAILURE,
+            payload: 'Not able to fetch the restaurants',
           });
         }
       });
   } catch (err) {
     dispatch({
-      type: CATEGORY_LIST_FAILURE,
-      payload: 'Not able to fetch the categories',
+      type: RESTAURANT_LIST_FAILURE,
+      payload: 'Not able to fetch the restaurants',
     });
   }
 };
 
-export const fetchCategoryDetails = (categoryId) => async (dispatch) => {
+export const fetchRestaurantDetails = (restaurantId) => async (dispatch) => {
   try {
     dispatch({
-      type: CATEGORY_DETAILS_REQUEST,
+      type: RESTAURANT_DETAILS_REQUEST,
     });
 
     const config = {
@@ -65,17 +65,17 @@ export const fetchCategoryDetails = (categoryId) => async (dispatch) => {
     };
 
     await axios
-      .get(GET_ALL_CATEGORIES_API+ '/' + categoryId, config)
+      .get(GET_ALL_RESTAURANTS_API+ '/' + restaurantId, config)
       .then((res) => {
         if (res.status === 200) {
-          dispatch({ type: CATEGORY_DETAILS_SUCCESS, payload: res.data.data });
+          dispatch({ type: RESTAURANT_DETAILS_SUCCESS, payload: res.data.data });
         } else {
-          dispatch({ type: CATEGORY_DETAILS_FAILURE, payload: res.data.message });
+          dispatch({ type: RESTAURANT_DETAILS_FAILURE, payload: res.data.message });
         }
       });
   } catch (err) {
     dispatch({
-      type: CATEGORY_DETAILS_FAILURE,
+      type: RESTAURANT_DETAILS_FAILURE,
       payload: err.response.data.message,
     });
   }
